@@ -34,6 +34,13 @@
             <textarea name="alamat" id="alamat" class="w-full border rounded p-2">{{ old('alamat') }}</textarea>
         </div>
 
+        <div class="mb-4">
+    <label for="telepon" class="block text-gray-700">Telepon</label>
+    <input type="text" name="telepon" id="telepon" class="w-full border rounded p-2"
+           value="{{ old('telepon') }}">
+    @error('telepon') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+</div>
+
         <div class="flex justify-end">
             <a href="{{ route('admin.nasabah.index') }}" class="px-4 py-2 bg-gray-500 text-white rounded mr-2">Batal</a>
             <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded">Simpan</button>

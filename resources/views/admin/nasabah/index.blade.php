@@ -23,23 +23,27 @@
         </tr>
     </thead>
     <tbody>
-        @foreach($nasabah as $n)
+    @forelse ($nasabah as $item)
         <tr class="border-b">
-            <td class="p-2">{{ $loop->iteration }}</td>
-            <td class="p-2">{{ $n->nama }}</td>
-            <td class="p-2">{{ $n->alamat }}</td>
-            <td class="p-2">{{ $n->telepon }}</td>
-            <td class="p-2">{{ $n->email }}</td>
-            <td class="p-2 space-x-2">
-                <a href="{{ route('admin.nasabah.edit',$n->id) }}" class="bg-yellow-500 text-white px-2 py-1 rounded">✏️ Edit</a>
-                <form action="{{ route('admin.nasabah.destroy',$n->id) }}" method="POST" class="inline-block" onsubmit="return confirm('Yakin hapus?')">
-                    @csrf @method('DELETE')
-                    <button type="submit" class="bg-red-500 text-white px-2 py-1 rounded">🗑 Hapus</button>
+            <td class="p-2">{{ $item->name }}</td>
+            <td class="p-2">{{ $item->alamat }}</td>
+            <td class="p-2">{{ $item->telepon }}</td>
+            <td class="p-2">{{ $item->email }}</td>
+            <td class="p-2">
+                <a href="{{ route('admin.nasabah.edit', $item->id) }}" class="text-blue-500">Edit</a> |
+                <form action="{{ route('admin.nasabah.destroy', $item->id) }}" method="POST" class="inline">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="text-red-500" onclick="return confirm('Yakin hapus?')">Hapus</button>
                 </form>
             </td>
         </tr>
-        @endforeach
-    </tbody>
+    @empty
+        <tr>
+            <td colspan="5" class="text-center text-gray-500 p-4">Belum ada nasabah</td>
+        </tr>
+    @endforelse
+</tbody>
 </table>
 
 <div class="mt-4">
