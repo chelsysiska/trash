@@ -31,6 +31,8 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 
 Route::middleware(['auth','role:admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::resource('nasabah', NasabahController::class);
+    Route::post('/admin/nasabah', [NasabahController::class, 'store'])->name('nasabah.store');
+
 });
 
 Route::middleware('auth')->group(function () {

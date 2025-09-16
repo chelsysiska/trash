@@ -4,8 +4,9 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Nasabah;
+use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\HS;
+use Illuminate\Support\Facades\Hash;
 
 class NasabahController extends Controller
 {
@@ -23,24 +24,20 @@ class NasabahController extends Controller
     public function store(Request $request)
 {
     $request->validate([
-        'name'     => 'required|string|max:255',
-        'email'    => 'required|string|email|max:255|unique:users',
-        'password' => 'required|string|min:8',
-        'alamat'   => 'nullable|string|max:255',
-        'telepon'  => 'nullable|string|max:20',
+        'nama'   => 'required|string|max:45',
+        'alamat' => 'required|string|max:255',
+        'telepon' => 'required|string|max:15',
+        'email' => 'required|email|unique:nasabah,email',
     ]);
 
-    User::create([
-        'name'     => $request->name,
-        'email'    => $request->email,
-        'password' => Hash::make($request->password),
-        'role'     => 'user',
-        'alamat'   => $request->alamat,
-        'telepon'  => $request->telepon,
+    Nasabah::create([
+        'nama'   => $request->nama,
+        'alamat' => $request->alamat,
+        'telepon' => $request->telepon,
+        'email' => $request->email,
     ]);
 
-    return redirect()->route('admin.nasabah.index')
-                     ->with('success', 'Nasabah berhasil ditambahkan.');
+    return redirect()->route('admin.nasabah.index')->with('success', 'Nasabah berhasil ditambahkan!');
 }
 
     public function edit(Nasabah $nasabah)

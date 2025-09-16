@@ -25,10 +25,12 @@
         </div>
 
         <div class="mb-4">
-            <label for="password" class="block text-gray-700">Password (kosongkan jika tidak diubah)</label>
-            <input type="password" name="password" id="password" class="w-full border rounded p-2">
-            @error('password') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
-        </div>
+    <label for="telepon" class="block text-gray-700">No HP</label>
+    <input type="text" name="telepon" id="telepon" class="w-full border rounded p-2"
+           value="{{ old('telepon', $nasabah->telepon) }}" required>
+    @error('telepon') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+</div>
+
 
         <div class="mb-4">
             <label for="alamat" class="block text-gray-700">Alamat</label>

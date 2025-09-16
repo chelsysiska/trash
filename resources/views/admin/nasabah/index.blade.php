@@ -17,18 +17,26 @@
         <tr>
             <th class="p-2">Nama</th>
             <th class="p-2">Alamat</th>
-            <th class="p-2">Telepon</th>
+            <th class="p-2">NIK</th>
             <th class="p-2">Email</th>
-            <th class="p-2">Aksi</th>
+            <th class="p-2">Status</th> <!-- ✅ Tambah kolom status -->
+        <th class="p-2">Aksi</th>
         </tr>
     </thead>
     <tbody>
     @forelse ($nasabah as $item)
         <tr class="border-b">
-            <td class="p-2">{{ $item->name }}</td>
+            <td class="p-2">{{ $item->nama }}</td>
             <td class="p-2">{{ $item->alamat }}</td>
             <td class="p-2">{{ $item->telepon }}</td>
             <td class="p-2">{{ $item->email }}</td>
+            <td class="p-2">
+                @if($item->jumlah_transaksi >= 5)
+                    <span class="text-green-600 font-bold">Aktif</span>
+                @else
+                    <span class="text-red-600 font-bold">Tidak Aktif</span>
+                @endif
+            </td>
             <td class="p-2">
                 <a href="{{ route('admin.nasabah.edit', $item->id) }}" class="text-blue-500">Edit</a> |
                 <form action="{{ route('admin.nasabah.destroy', $item->id) }}" method="POST" class="inline">
@@ -40,7 +48,7 @@
         </tr>
     @empty
         <tr>
-            <td colspan="5" class="text-center text-gray-500 p-4">Belum ada nasabah</td>
+            <td colspan="6" class="text-center text-gray-500 p-4">Belum ada nasabah</td>
         </tr>
     @endforelse
 </tbody>
