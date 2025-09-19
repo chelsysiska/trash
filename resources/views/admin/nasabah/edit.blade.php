@@ -11,9 +11,9 @@
         @method('PUT')
 
         <div class="mb-4">
-            <label for="name" class="block text-gray-700">Nama</label>
-            <input type="text" name="name" id="name" class="w-full border rounded p-2"
-                   value="{{ old('name', $nasabah->name) }}" required>
+            <label for="nama" class="block text-gray-700">Nama</label>
+            <input type="text" name="nama" id="nama" class="w-full border rounded p-2"
+                   value="{{ old('nama', $nasabah->nama) }}" required>
             @error('name') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
         </div>
 
@@ -25,7 +25,7 @@
         </div>
 
         <div class="mb-4">
-    <label for="telepon" class="block text-gray-700">No HP</label>
+    <label for="telepon" class="block text-gray-700">Telepon</label>
     <input type="text" name="telepon" id="telepon" class="w-full border rounded p-2"
            value="{{ old('telepon', $nasabah->telepon) }}" required>
     @error('telepon') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror

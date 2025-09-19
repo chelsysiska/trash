@@ -12,49 +12,40 @@
     <div class="bg-green-100 text-green-700 p-3 rounded mb-4">{{ session('success') }}</div>
 @endif
 
-<table class="w-full bg-white shadow rounded">
-    <thead class="bg-gray-200">
-        <tr>
-            <th class="p-2">Nama</th>
-            <th class="p-2">Alamat</th>
-            <th class="p-2">NIK</th>
-            <th class="p-2">Email</th>
-            <th class="p-2">Status</th> <!-- ✅ Tambah kolom status -->
-        <th class="p-2">Aksi</th>
+<table class="min-w-full table-auto border-collapse border border-gray-300">
+    <thead>
+        <tr class="bg-gray-100 text-left">
+            <th class="border border-gray-300 px-4 py-2 text-center">Nama</th>
+            <th class="border border-gray-300 px-4 py-2 text-center">Alamat</th>
+            <th class="border border-gray-300 px-4 py-2 text-center">Email</th>
+            <th class="border border-gray-300 px-4 py-2 text-center">Status</th>
+            <th class="border border-gray-300 px-4 py-2 text-center">Aksi</th>
         </tr>
     </thead>
     <tbody>
-    @forelse ($nasabah as $item)
-        <tr class="border-b">
-            <td class="p-2">{{ $item->nama }}</td>
-            <td class="p-2">{{ $item->alamat }}</td>
-            <td class="p-2">{{ $item->telepon }}</td>
-            <td class="p-2">{{ $item->email }}</td>
-            <td class="p-2">
-                @if($item->jumlah_transaksi >= 5)
-                    <span class="text-green-600 font-bold">Aktif</span>
-                @else
-                    <span class="text-red-600 font-bold">Tidak Aktif</span>
-                @endif
-            </td>
-            <td class="p-2">
-                <a href="{{ route('admin.nasabah.edit', $item->id) }}" class="text-blue-500">Edit</a> |
-                <form action="{{ route('admin.nasabah.destroy', $item->id) }}" method="POST" class="inline">
-                    @csrf
-                    @method('DELETE')
-                    <button type="submit" class="text-red-500" onclick="return confirm('Yakin hapus?')">Hapus</button>
-                </form>
-            </td>
-        </tr>
-    @empty
-        <tr>
-            <td colspan="6" class="text-center text-gray-500 p-4">Belum ada nasabah</td>
-        </tr>
-    @endforelse
-</tbody>
+        @foreach($nasabah as $nasabah)
+            <tr>
+                <td class="border border-gray-300 px-4 py-2 text-center">{{ $nasabah->nama }}</td>
+                <td class="border border-gray-300 px-4 py-2">{{ $nasabah->alamat }}</td>
+                <td class="border border-gray-300 px-4 py-2">{{ $nasabah->email }}</td>
+                <td class="border border-gray-300 px-4 py-2 text-center">
+                    @if($nasabah->status == 'aktif')
+                        <span class="text-green-600 font-bold">Aktif</span>
+                    @else
+                        <span class="text-red-600 font-bold">Tidak Aktif</span>
+                    @endif
+                </td>
+                <td class="border border-gray-300 px-4 py-2 text-center">
+                    <a href="{{ route('admin.nasabah.setoran.index', $nasabah->id) }}" class="text-blue-600">Setoran</a> |
+                    <a href="{{ route('admin.nasabah.edit', $nasabah->id) }}" class="text-blue-600">Edit</a> | 
+                    <form action="{{ route('admin.nasabah.destroy', $nasabah->id) }}" method="POST" class="inline">
+                        @csrf
+                        @method('DELETE')
+                    <button type="submit" class="text-red-600">Hapus</button>
+                    </form>
+                </td>
+            </tr>
+        @endforeach
+    </tbody>
 </table>
-
-<div class="mt-4">
-    {{ $nasabah->links() }}
-</div>
 @endsection

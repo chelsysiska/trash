@@ -18,5 +18,10 @@ class Nasabah extends Model
     'email',
 ];
 
+public function setoran()
+    {
+        return $this->hasMany(Setoran::class);
+    }
+
 }
 

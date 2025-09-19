@@ -45,19 +45,25 @@ class NasabahController extends Controller
         return view('admin.nasabah.edit', compact('nasabah'));
     }
 
-    public function update(Request $request, Nasabah $nasabah)
-    {
-        $request->validate([
-            'nama' => 'required|string|max:100',
-            'alamat' => 'required|string',
-            'telepon' => 'nullable|string|max:20',
-            'email' => 'required|email|unique:nasabah,email,'.$nasabah->id
-        ]);
+    public function update(Request $request, $id)
+{
+    $request->validate([
+        'nama' => 'required|string|max:255',
+        'alamat' => 'required|string|max:255',
+        'email' => 'required|email|max:255|unique:nasabah,email,' . $id,
+        'telepon' => 'required|string|max:20',
+    ]);
 
-        $nasabah->update($request->all());
+    $nasabah = Nasabah::findOrFail($id);
+    $nasabah->update([
+        'nama'   => $request->nama,
+        'alamat' => $request->alamat,
+        'email'  => $request->email,
+        'telepon'  => $request->telepon,
+    ]);
 
-        return redirect()->route('admin.nasabah.index')->with('success','Data nasabah berhasil diperbarui!');
-    }
+    return redirect()->route('admin.nasabah.index')->with('success', 'Data nasabah berhasil diperbarui!');
+}
 
     public function destroy(Nasabah $nasabah)
     {

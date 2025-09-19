@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\NasabahController;
+use App\Http\Controllers\Admin\SetoranController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -31,15 +32,18 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 
 Route::middleware(['auth','role:admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::resource('nasabah', NasabahController::class);
-    Route::post('/admin/nasabah', [NasabahController::class, 'store'])->name('nasabah.store');
 
+    // Nested resource untuk setoran per nasabah
+    Route::resource('nasabah.setoran', SetoranController::class)->shallow();
+
+    Route::resource('transaksi', App\Http\Controllers\Admin\TransaksiController::class);
+    Route::resource('jenis_sampah', App\Http\Controllers\Admin\JenisSampahController::class);
 });
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
 });
-
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

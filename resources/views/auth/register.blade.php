@@ -10,7 +10,7 @@
 
         <!-- Nama -->
         <div class="mt-4">
-            <label for="name">Nama</label>
+            <label for="nama">Nama</label>
             <input id="name" type="text" name="name" required class="block mt-1 w-full" />
         </div>
 
@@ -42,4 +42,8 @@
             </x-primary-button>
         </div>
     </form>
+    @error('email')
+    <small class="text-danger">{{ $message }}</small>
+@enderror
+
 </x-guest-layout>

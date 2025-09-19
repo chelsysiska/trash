@@ -74,8 +74,8 @@ class DashboardController extends Controller
         // Chart jenis sampah
         $jenisSampah = DB::table('detail_transaksi')
             ->join('jenis_sampah', 'detail_transaksi.jenis_sampah_id', '=', 'jenis_sampah.id')
-            ->select('jenis_sampah.nama_sampah', DB::raw('SUM(detail_transaksi.berat) as total_berat'))
-            ->groupBy('jenis_sampah.id', 'jenis_sampah.nama_sampah')
+            ->select('jenis_sampah.nama', DB::raw('SUM(detail_transaksi.berat) as total_berat'))
+            ->groupBy('jenis_sampah.id', 'jenis_sampah.nama')
             ->orderBy('total_berat', 'desc')
             ->limit(6)
             ->get();
@@ -83,7 +83,7 @@ class DashboardController extends Controller
         $labels = [];
         $dataJenis = [];
         foreach ($jenisSampah as $item) {
-            $labels[] = $item->nama_sampah;
+            $labels[] = $item->nama;
             $dataJenis[] = floatval($item->total_berat);
         }
         if (empty($labels)) {
