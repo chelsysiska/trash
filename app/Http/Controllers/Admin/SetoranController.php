@@ -5,82 +5,80 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Nasabah;
 use App\Models\Setoran;
+use App\Models\JenisSampah;
 use Illuminate\Http\Request;
 
 class SetoranController extends Controller
 {
-    public function index($nasabah_id)
-    {
-        $nasabah = Nasabah::findOrFail($nasabah_id);
-        $setoran = Setoran::where('nasabah_id', $nasabah_id)->get();
+    public function index(Nasabah $nasabah)
+{
+    $setoran = Setoran::where('nasabah_id', $nasabah->id)->get();
+    return view('admin.setoran.index', compact('nasabah', 'setoran'));
+}
 
-        return view('admin.setoran.index', compact('nasabah', 'setoran'));
-    }
+public function create(Nasabah $nasabah)
+{
+    $jenisSampah = JenisSampah::all();
+    return view('admin.setoran.create', compact('nasabah', 'jenisSampah'));
+}
 
-    public function create($nasabah_id)
-    {
-        $nasabah = Nasabah::findOrFail($nasabah_id);
-        return view('admin.setoran.create', compact('nasabah'));
-    }
+public function store(Request $request, Nasabah $nasabah)
+{
+    $request->validate([
+        'tanggal' => 'required|date',
+        'jenis_sampah_id' => 'required|exists:jenis_sampah,id',
+        'berat' => 'required|numeric',
+        'harga_per_kg' => 'required|numeric',
+    ]);
 
-    public function store(Request $request, $nasabah_id)
-    {
-        $request->validate([
-            'berat' => 'required|numeric',
-            'harga' => 'required|numeric',
-            'tanggal_setor' => 'required|date',
-        ]);
+    $total = $request->berat * $request->harga_per_kg;
 
-        $total = $request->berat * $request->harga;
+    Setoran::create([
+        'nasabah_id' => $nasabah->id,
+        'tanggal' => $request->tanggal,
+        'jenis_sampah_id' => $request->jenis_sampah_id,
+        'berat' => $request->berat,
+        'harga_per_kg' => $request->harga_per_kg,
+        'total_harga' => $total,
+    ]);
 
-        Setoran::create([
-            'nasabah_id' => $nasabah_id,
-            'berat' => $request->berat,
-            'harga' => $request->harga,
-            'total' => $total,
-            'tanggal_setor' => $request->tanggal_setor,
-        ]);
-
-        return redirect()->route('admin.nasabah.setoran.index', $nasabah_id)
+    return redirect()->route('admin.nasabah.setoran.index', $nasabah->id)
         ->with('success', 'Setoran berhasil ditambahkan');
-    }
+}
 
-    public function edit($nasabah_id, $id)
-    {
-        $nasabah = Nasabah::findOrFail($nasabah_id);
-        $setoran = Setoran::findOrFail($id);
+public function edit(Setoran $setoran)
+{
+    $nasabah = $setoran->nasabah;
+    return view('admin.setoran.edit', compact('nasabah', 'setoran'));
+}
 
-        return view('admin.setoran.edit', compact('nasabah', 'setoran'));
-    }
+public function update(Request $request, Setoran $setoran)
+{
+    $request->validate([
+        'berat' => 'required|numeric',
+        'harga_per_kg' => 'required|numeric',
+        'tanggal' => 'required|date',
+    ]);
 
-    public function update(Request $request, $nasabah_id, $id)
-    {
-        $request->validate([
-            'berat' => 'required|numeric',
-            'harga' => 'required|numeric',
-            'tanggal_setor' => 'required|date',
-        ]);
+    $total = $request->berat * $request->harga_per_kg;
 
-        $setoran = Setoran::findOrFail($id);
-        $setoran->update([
-            'berat' => $request->berat,
-            'harga' => $request->harga,
-            'total' => $request->berat * $request->harga,
-            'tanggal_setor' => $request->tanggal_setor,
-        ]);
+    $setoran->update([
+        'berat' => $request->berat,
+        'harga_per_kg' => $request->harga_per_kg,
+        'total_harga' => $total,
+        'tanggal' => $request->tanggal,
+    ]);
 
-        return redirect()->route('admin.nasabah.setoran.index', $nasabah_id)
-        ->with('success', 'Setoran berhasil ditambahkan');
-    }
+    return redirect()->route('admin.nasabah.setoran.index', $setoran->nasabah_id)
+        ->with('success', 'Setoran berhasil diperbarui');
+}
 
-    public function destroy($nasabah_id, $id)
-    {
-        $setoran = Setoran::findOrFail($id);
-        $setoran->delete();
+public function destroy(Setoran $setoran)
+{
+    $nasabah_id = $setoran->nasabah_id;
+    $setoran->delete();
 
-        return redirect()->route('admin.nasabah.setoran.index', $nasabah_id)
-        ->with('success', 'Setoran berhasil ditambahkan');
-    }
-
-    
+    return redirect()->route('admin.nasabah.setoran.index', $nasabah_id)
+        ->with('success', 'Setoran berhasil dihapus');
+}
 }

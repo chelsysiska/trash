@@ -10,7 +10,14 @@ class Setoran extends Model
     use HasFactory;
 
     protected $table = 'setoran';
-    protected $fillable = ['nasabah_id', 'berat', 'harga', 'total', 'tanggal_setor'];
+    protected $fillable = [
+        'nasabah_id',
+        'tanggal',
+        'jenis_sampah_id',
+        'berat',
+        'harga_per_kg',
+        'total_harga'
+    ];
 
     public function nasabah()
     {

@@ -4,47 +4,44 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\NasabahController;
 use App\Http\Controllers\Admin\SetoranController;
+use App\Http\Controllers\Admin\TransaksiController;
+use App\Http\Controllers\Admin\JenisSampahController;
 use Illuminate\Support\Facades\Route;
-
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "web" middleware group. Make something great!
-|
-*/
 
 Route::get('/', function () {
     return view('welcome');
 });
 
+// Dashboard user biasa
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::middleware(['auth', 'role:admin'])->group(function () {
-    Route::get('/admin/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
-    Route::get('/admin/riwayat', [DashboardController::class, 'riwayat'])->name('admin.riwayat');
-});
+// Admin routes
+// Admin routes
+Route::middleware(['auth', 'role:admin'])
+    ->prefix('admin')
+    ->name('admin.')
+    ->group(function () {
 
-Route::middleware(['auth','role:admin'])->prefix('admin')->name('admin.')->group(function () {
+    // Dashboard & Riwayat
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/riwayat', [DashboardController::class, 'riwayat'])->name('riwayat');
+
+    // Nasabah
     Route::resource('nasabah', NasabahController::class);
 
-    // Nested resource untuk setoran per nasabah
+    // Setoran (nested + standalone untuk create/edit)
     Route::resource('nasabah.setoran', SetoranController::class)->shallow();
+    Route::resource('setoran', App\Http\Controllers\Admin\SetoranController::class);
+    // Transaksi
+    Route::resource('transaksi', TransaksiController::class);
 
-    Route::resource('transaksi', App\Http\Controllers\Admin\TransaksiController::class);
-    Route::resource('jenis_sampah', App\Http\Controllers\Admin\JenisSampahController::class);
+    // Jenis Sampah
+    Route::resource('jenis-sampah', JenisSampahController::class);
 });
 
-Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-});
-
+// Profile routes (user)
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');

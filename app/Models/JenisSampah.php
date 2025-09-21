@@ -12,9 +12,7 @@ class JenisSampah extends Model
     protected $table = 'jenis_sampah';
 
     protected $fillable = [
-        'nama',
-        'harga',
-        'satuan',
+        'nama_sampah',
+        'harga_per_kg',
     ];
 }
-

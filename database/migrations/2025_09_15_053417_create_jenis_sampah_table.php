@@ -12,12 +12,11 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('jenis_sampah', function (Blueprint $table) {
-            $table->id();
-            $table->string('nama');
-            $table->decimal('harga', 10, 2);
-            $table->enum('satuan', ['Kg', 'Liter', 'Pcs'])->default('Kg');
-            $table->timestamps();
-        });
+    $table->id();
+    $table->string('nama_sampah');
+    $table->decimal('harga_per_kg', 10, 2);
+    $table->timestamps();
+});
     }
 
     /**

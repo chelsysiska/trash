@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use App\Models\JenisSampah; 
 use Illuminate\Support\Facades\DB;
 
 class JenisSampahSeeder extends Seeder
@@ -13,7 +14,7 @@ class JenisSampahSeeder extends Seeder
      */
     public function run(): void
     {
-        DB::table('jenis_sampah')->insert([
+        JenisSampah::insert([
     ['nama_sampah' => 'Plastik', 'harga_per_kg' => 2000],
     ['nama_sampah' => 'Kertas', 'harga_per_kg' => 1500],
     ['nama_sampah' => 'Logam', 'harga_per_kg' => 5000],

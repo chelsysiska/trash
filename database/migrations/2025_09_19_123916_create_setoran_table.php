@@ -12,17 +12,18 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('setoran', function (Blueprint $table) {
-        $table->id();
-        $table->unsignedBigInteger('nasabah_id'); // relasi ke nasabah
-        $table->date('tanggal');
-        $table->string('jenis_sampah');
-        $table->decimal('berat', 8, 2); // kg
-        $table->decimal('harga_per_kg', 10, 2);
-        $table->decimal('total_harga', 12, 2);
-        $table->timestamps();
+    $table->id();
+    $table->unsignedBigInteger('nasabah_id');
+    $table->unsignedBigInteger('jenis_sampah_id'); // relasi
+    $table->date('tanggal');
+    $table->decimal('berat', 8, 2);
+    $table->decimal('harga_per_kg', 10, 2);
+    $table->decimal('total_harga', 12, 2);
+    $table->timestamps();
 
-        $table->foreign('nasabah_id')->references('id')->on('nasabah')->onDelete('cascade');
-    });
+    $table->foreign('nasabah_id')->references('id')->on('nasabah')->onDelete('cascade');
+    $table->foreign('jenis_sampah_id')->references('id')->on('jenis_sampah')->onDelete('cascade');
+});
     }
 
     /**
