@@ -33,7 +33,7 @@ Route::middleware(['auth', 'role:admin'])
 
     // Setoran (nested + standalone untuk create/edit)
     Route::resource('nasabah.setoran', SetoranController::class)->shallow();
-    Route::resource('setoran', App\Http\Controllers\Admin\SetoranController::class);
+    Route::resource('setoran', SetoranController::class);
     // Transaksi
     Route::resource('transaksi', TransaksiController::class);
 

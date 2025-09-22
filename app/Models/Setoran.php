@@ -23,4 +23,12 @@ class Setoran extends Model
     {
         return $this->belongsTo(Nasabah::class);
     }
+
+    /**
+     * Get the JenisSampah that owns the Setoran.
+     */
+    public function jenisSampah()
+    {
+        return $this->belongsTo(JenisSampah::class, 'jenis_sampah_id');
+    }
 }
